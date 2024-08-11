@@ -1,0 +1,3 @@
+package uz.futuresoft.mytaxi_task.presentation.mainActivity.event
+
+interface MainActivityEvent
