@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 import uz.futuresoft.mytaxi_task.domain.model.Location
 
 @Dao
@@ -13,5 +14,5 @@ interface LocationDao {
     suspend fun insertLocation(location: Location)
 
     @Query("SELECT * FROM location")
-    suspend fun getLocation(): Location?
+    fun getLocation(): Flow<Location>
 }

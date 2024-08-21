@@ -1,5 +1,6 @@
 package uz.futuresoft.mytaxi_task.presentation.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,21 +22,20 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import uz.futuresoft.mytaxi_task.presentation.ui.theme.ButtonBackgroundColorLight
-import uz.futuresoft.mytaxi_task.presentation.ui.theme.ButtonBorderColorLight
+import uz.futuresoft.mytaxi_task.presentation.ui.theme.Black
 import uz.futuresoft.mytaxi_task.presentation.ui.theme.Green
-import uz.futuresoft.mytaxi_task.presentation.ui.theme.TextColorLight1
+import uz.futuresoft.mytaxi_task.presentation.ui.theme.MyTaxiTaskTheme
 import uz.futuresoft.mytaxi_task.presentation.ui.theme.font.latoFontFamily
 
 @Composable
 fun TextButton(
     size: Dp = 56.dp,
     shape: RoundedCornerShape = RoundedCornerShape(14.dp),
-    cardColor: Color = ButtonBackgroundColorLight,
+    cardColor: Color = MaterialTheme.colorScheme.surface,
     borderWidth: Dp = 0.dp,
-    borderColor: Color = ButtonBorderColorLight,
+    borderColor: Color = MaterialTheme.colorScheme.surface,
     text: String,
-    textColor: Color = TextColorLight1,
+    textColor: Color = Black,
     fontSize: TextUnit = 20.sp,
     fontFamily: FontFamily = latoFontFamily,
     fontWeight: FontWeight = FontWeight.Bold,
@@ -71,13 +72,16 @@ fun TextButton(
     }
 }
 
-@Preview
+@Preview(name = "Light Mode")
+@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun TextButtonPreview() {
-    TextButton(
-        cardColor = Green,
-        borderWidth = 4.dp,
-        text = "95",
-        onClick = {}
-    )
+    MyTaxiTaskTheme {
+        TextButton(
+            cardColor = Green,
+            borderWidth = 4.dp,
+            text = "95",
+            onClick = {}
+        )
+    }
 }

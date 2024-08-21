@@ -1,4 +1,5 @@
 [versions]
+accompanistSystemuicontroller = "0.30.0"
 agp = "8.5.0"
 android = "11.5.1"
 hiltNavigationCompose = "1.2.0"
@@ -16,8 +17,10 @@ playServicesLocation = "21.3.0"
 roomRuntime = "2.6.1"
 roomCompiler = "2.6.1"
 hiltAndroid = "2.50"
+appcompatResources = "1.7.0"
 
 [libraries]
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
 android-mapbox = { module = "com.mapbox.maps:android", version.ref = "android" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
@@ -41,6 +44,7 @@ maps-compose = { module = "com.mapbox.extension:maps-compose", version.ref = "ma
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
+androidx-appcompat-resources = { group = "androidx.appcompat", name = "appcompat-resources", version.ref = "appcompatResources" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

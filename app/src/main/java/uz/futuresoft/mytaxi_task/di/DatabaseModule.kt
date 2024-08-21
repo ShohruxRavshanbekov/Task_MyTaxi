@@ -9,6 +9,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import uz.futuresoft.mytaxi_task.data.dataSource.local.database.LocationDatabase
 import uz.futuresoft.mytaxi_task.data.dataSource.local.database.dao.LocationDao
+import uz.futuresoft.mytaxi_task.data.repository.LocationRepositoryImpl
+import uz.futuresoft.mytaxi_task.domain.repository.LocationRepository
 import javax.inject.Singleton
 
 @Module
@@ -26,6 +28,7 @@ object DatabaseModule {
     }
 
     @Provides
+    @Singleton
     fun provideUserDao(database: LocationDatabase): LocationDao {
         return database.locationDao()
     }

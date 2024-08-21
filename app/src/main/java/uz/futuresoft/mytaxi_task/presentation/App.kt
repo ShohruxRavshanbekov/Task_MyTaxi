@@ -6,8 +6,8 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import dagger.hilt.android.HiltAndroidApp
-import uz.futuresoft.mytaxi_task.presentation.service.locationService.utils.LocationServiceConstants.LOCATION_SERVICE_NOTIFICATION_CHANNEL_ID
-import uz.futuresoft.mytaxi_task.presentation.service.locationService.utils.LocationServiceConstants.LOCATION_SERVICE_NOTIFICATION_CHANNEL_NAME
+import uz.futuresoft.mytaxi_task.presentation.service.locationService.LocationService.Companion.LOCATION_SERVICE_NOTIFICATION_CHANNEL_ID
+import uz.futuresoft.mytaxi_task.presentation.service.locationService.LocationService.Companion.LOCATION_SERVICE_NOTIFICATION_CHANNEL_NAME
 
 @HiltAndroidApp
 class App : Application() {

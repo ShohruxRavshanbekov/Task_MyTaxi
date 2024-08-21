@@ -6,24 +6,37 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.android.gms.location.LocationServices
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import uz.futuresoft.mytaxi_task.R
 import uz.futuresoft.mytaxi_task.domain.model.Location
 import uz.futuresoft.mytaxi_task.domain.repository.LocationRepository
+import uz.futuresoft.mytaxi_task.domain.useCase.GetLocationUseCase
+import uz.futuresoft.mytaxi_task.domain.useCase.InsertLocationUseCase
 import uz.futuresoft.mytaxi_task.presentation.service.locationService.client.DefaultLocationClient
 import uz.futuresoft.mytaxi_task.presentation.service.locationService.client.LocationClient
-import uz.futuresoft.mytaxi_task.presentation.service.locationService.utils.LocationServiceConstants
-import uz.futuresoft.mytaxi_task.presentation.service.locationService.utils.LocationServiceConstants.LOCATION_SERVICE_NOTIFICATION_CHANNEL_ID
 import javax.inject.Inject
+import kotlin.math.log
 
+@AndroidEntryPoint
 class LocationService : Service() {
 
+    companion object {
+        const val LOCATION_SERVICE_NOTIFICATION_CHANNEL_ID = "location"
+        const val LOCATION_SERVICE_NOTIFICATION_CHANNEL_NAME = "Location"
+    }
+
     @Inject
-    lateinit var locationRepository: LocationRepository
+    lateinit var insertLocationUseCase: InsertLocationUseCase
+
+    @Inject
+    lateinit var getLocationUseCase: GetLocationUseCase
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private lateinit var locationClient: LocationClient
@@ -40,36 +53,42 @@ class LocationService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         startTracking()
-        return super.onStartCommand(intent, flags, startId)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        serviceScope.cancel()
-        stopSelf()
+        return START_STICKY
     }
 
     private fun startTracking() {
-        val notification = NotificationCompat.Builder(
-            this,
-            LOCATION_SERVICE_NOTIFICATION_CHANNEL_ID
-        )
-            .setContentTitle("Joylashuvni kuzatish")
-            .setOngoing(true)
-            .build()
+        val notification =
+            NotificationCompat.Builder(this, LOCATION_SERVICE_NOTIFICATION_CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_location_on)
+                .setContentTitle("Joylashuv kuzatilmoqda")
+                .build()
 
         locationClient
-            .getLocationUpdates(1_000L)
+            .getLocationUpdates(1000L)
             .catch { e -> e.printStackTrace() }
             .onEach {
-                locationRepository.insertLocation(
+                insertLocationUseCase.invoke(
                     location = Location(
                         latitude = it.latitude,
-                        longitude = it.longitude
+                        longitude = it.longitude,
+                        bearing = it.bearing.toDouble()
                     )
                 )
+                sendLocationUpdates()
             }
+            .launchIn(serviceScope)
 
         startForeground(1, notification)
+    }
+
+    private fun sendLocationUpdates() {
+        val intent = Intent("liveLocation")
+        intent.putExtra("location", "locationUpdated")
+        sendBroadcast(intent)
+    }
+
+    override fun onDestroy() {
+        serviceScope.cancel()
+        stopSelf()
     }
 }

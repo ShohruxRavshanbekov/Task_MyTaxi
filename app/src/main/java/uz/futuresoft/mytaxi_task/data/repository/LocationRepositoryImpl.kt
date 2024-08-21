@@ -1,5 +1,6 @@
 package uz.futuresoft.mytaxi_task.data.repository
 
+import kotlinx.coroutines.flow.Flow
 import uz.futuresoft.mytaxi_task.data.dataSource.local.database.dao.LocationDao
 import uz.futuresoft.mytaxi_task.domain.model.Location
 import uz.futuresoft.mytaxi_task.domain.repository.LocationRepository
@@ -12,5 +13,5 @@ class LocationRepositoryImpl @Inject constructor(
         locationDao.insertLocation(location = location)
     }
 
-    override suspend fun getLocation(): Location? = locationDao.getLocation()
+    override suspend fun getLocation(): Flow<Location> = locationDao.getLocation()
 }

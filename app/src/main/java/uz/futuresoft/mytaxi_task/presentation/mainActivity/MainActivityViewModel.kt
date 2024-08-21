@@ -1,12 +1,10 @@
 package uz.futuresoft.mytaxi_task.presentation.mainActivity
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import uz.futuresoft.mytaxi_task.domain.useCase.GetLocationUseCase
 import uz.futuresoft.mytaxi_task.presentation.mainActivity.event.GetLocationEvent
@@ -19,8 +17,8 @@ class MainActivityViewModel @Inject constructor(
     private val getLocationUseCase: GetLocationUseCase,
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(MainActivityState())
-    val state: State<MainActivityState> = _state
+    private val _state = MutableStateFlow(MainActivityState())
+    val state: StateFlow<MainActivityState> = _state
 
     fun send(event: MainActivityEvent) {
         when (event) {
@@ -30,7 +28,9 @@ class MainActivityViewModel @Inject constructor(
 
     private fun getLocation() {
         viewModelScope.launch {
-            _state.value = MainActivityState(location = getLocationUseCase.invoke())
+            getLocationUseCase.invoke().collect {
+                _state.value = MainActivityState(location = it)
+            }
         }
     }
 }

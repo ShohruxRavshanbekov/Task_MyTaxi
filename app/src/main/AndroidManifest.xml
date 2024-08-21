@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".presentation.App"
@@ -21,13 +22,12 @@
 
         <service
             android:name=".presentation.service.locationService.LocationService"
-            android:foregroundServiceType="location"
-            tools:ignore="ForegroundServicePermission" />
+            android:exported="false"
+            android:foregroundServiceType="location" />
 
         <activity
             android:name=".presentation.mainActivity.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.MyTaxiTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

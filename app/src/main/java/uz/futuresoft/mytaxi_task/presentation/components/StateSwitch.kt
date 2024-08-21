@@ -1,5 +1,6 @@
 package uz.futuresoft.mytaxi_task.presentation.components
 
+import android.content.res.Configuration
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,17 +32,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import uz.futuresoft.mytaxi_task.presentation.ui.theme.ButtonBackgroundColorLight
+import uz.futuresoft.mytaxi_task.presentation.ui.theme.Black
 import uz.futuresoft.mytaxi_task.presentation.ui.theme.Green
+import uz.futuresoft.mytaxi_task.presentation.ui.theme.MyTaxiTaskTheme
 import uz.futuresoft.mytaxi_task.presentation.ui.theme.Red
 import uz.futuresoft.mytaxi_task.presentation.ui.theme.font.latoFontFamily
 
 @Composable
 fun StateSwitch(
     checked: Boolean = true,
-    backgroundColor: Color = ButtonBackgroundColorLight,
+    backgroundColor: Color = MaterialTheme.colorScheme.surface,
     parentShape: RoundedCornerShape = RoundedCornerShape(14.dp),
     toggleShape: RoundedCornerShape = RoundedCornerShape(14.dp),
+    activeTextColor: Color = Black,
+    inactiveTextColor: Color = MaterialTheme.colorScheme.onPrimary,
     animationSpec: AnimationSpec<Dp> = tween(durationMillis = 300),
 ) {
 
@@ -84,13 +89,13 @@ fun StateSwitch(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = "Band",
+                    color = if (!switchState) activeTextColor else inactiveTextColor,
                     fontSize = 18.sp,
                     fontFamily = latoFontFamily,
                     fontWeight = if (!switchState) FontWeight.Bold else FontWeight.Normal,
                     textAlign = TextAlign.Center
                 )
             }
-
             Box(
                 modifier = Modifier
                     .width(92.dp)
@@ -100,6 +105,7 @@ fun StateSwitch(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = "Faol",
+                    color = if (switchState) activeTextColor else inactiveTextColor,
                     fontSize = 18.sp,
                     fontFamily = latoFontFamily,
                     fontWeight = if (switchState) FontWeight.Bold else FontWeight.Normal,
@@ -110,8 +116,11 @@ fun StateSwitch(
     }
 }
 
-@Preview
+@Preview(name = "Light Mode")
+@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun StateSwitchPreview() {
-    StateSwitch()
+    MyTaxiTaskTheme {
+        StateSwitch()
+    }
 }
